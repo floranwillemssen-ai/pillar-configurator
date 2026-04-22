@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbench 3D Configurator</title>
+
+    <!-- Three.js via importmap — geen bundler nodig -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.176.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.176.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+    <!-- 3D canvas: 80% van de breedte -->
+    <div id="canvas-container"></div>
+
+    <!-- Offerte-sidebar: 20% van de breedte -->
+    <aside id="quote-form-container"></aside>
+
+    <script>
+        console.log("INDEX HTML WORDT GELADEN");
+        console.log("werkt!");
+    </script>
+
+    <script type="module" src="./js/main.js"></script>
+</body>
+</html>
