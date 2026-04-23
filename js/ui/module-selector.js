@@ -1,5 +1,6 @@
+import * as THREE from 'three';
 import ModelLoader from '../loaders/model-loader.js';
-import { scene } from '../scene/scene-setup.js';
+import { scene, camera } from '../scene/scene-setup.js';
 
 const loader = new ModelLoader();
 let modules = [];
@@ -51,6 +52,7 @@ async function addModule() {
 
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
+        fitCameraToModel(model);
 
         placedModels.push({ mod, model });
         addToPlacedList(mod, placedModels.length - 1);
@@ -79,6 +81,17 @@ function addToPlacedList(mod, index) {
         console.log(`✓ Module verwijderd: ${mod.name}`);
     });
     list.appendChild(li);
+}
+
+function fitCameraToModel(model) {
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const fov = camera.fov * (Math.PI / 180);
+    let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 1.5;
+    camera.position.set(center.x, center.y + maxDim * 0.5, center.z + cameraZ);
+    camera.lookAt(center);
 }
 
 export { initModuleSelector };

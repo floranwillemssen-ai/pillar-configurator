@@ -7,7 +7,8 @@ scene.background = new THREE.Color('#f0f0f0');
 // --- Camera ---
 // Verhouding 16:9 als startwaarde; wordt bijgewerkt bij resize
 const camera = new THREE.PerspectiveCamera(75, 16 / 9, 0.1, 1000);
-camera.position.z = 5;
+camera.position.set(0, 5, 8);
+camera.lookAt(0, 0, 0);
 
 // --- Renderer ---
 const renderer = new THREE.WebGLRenderer({ antialias: true });
