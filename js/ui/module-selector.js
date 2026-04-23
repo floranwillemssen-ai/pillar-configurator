@@ -39,9 +39,16 @@ async function addModule() {
 
     try {
         const model = await loader.loadModel(mod.file);
-        model.scale.setScalar(mod.scale ?? 1);
-        // Spreid geplaatste modellen uit zodat ze niet overlappen
-        model.position.set(placedModels.length * 1.5, 0, 0);
+
+        const s = mod.scale ?? 1;
+        model.scale.set(s, s, s);
+
+        const [px, py, pz] = mod.position ?? [0, 0, 0];
+        model.position.set(px, py, pz);
+
+        const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
+        model.rotation.set(rx, ry, rz);
+
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
 

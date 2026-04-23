@@ -1,9 +1,11 @@
 [
   {
     "id": "342_DM54BC7D1D",
-    "name": "Module 342 — DM54BC7D1D",
+    "name": "Module 342",
     "file": "/models/342_DM54BC7D1D.glb",
-    "category": "kast",
-    "scale": 1
+    "category": "cabinet",
+    "scale": 0.01,
+    "position": [0, 0, 0],
+    "rotation": [0, 0, 0]
   }
 ]
