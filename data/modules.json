@@ -5,7 +5,7 @@
     "file": "/models/342_DM54BC7D1D.glb",
     "category": "cabinet",
     "scale": 0.01,
-    "position": [0, 0, 0],
-    "rotation": [1.5708, 0, 0]
+    "position": [0, 0.5, 0],
+    "rotation": [0, 0, 0]
   }
 ]
