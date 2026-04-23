@@ -1,5 +1,5 @@
 // Volledige URL nodig: frontend (5500) en backend (3000) zijn verschillende origins
-const API_BASE = 'https://pillar-backend.railway.app/api';
+const API_BASE = 'https://pillar-configurator-production.up.railway.app/api';
 
 // Stuur een offerte-aanvraag naar de backend
 async function submitQuote(configData, contactData) {
