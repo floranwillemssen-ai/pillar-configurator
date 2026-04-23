@@ -11,8 +11,15 @@ const app  = express();
 const PORT = process.env.PORT || 3000;
 
 // --- CORS: voor alle andere middleware en routes ---
+const allowedOrigins = [
+    'http://localhost:5500',
+    'http://127.0.0.1:5500',
+    'http://localhost:3000',
+    process.env.FRONTEND_URL,          // Vercel productie-URL (Railway env var)
+].filter(Boolean);
+
 app.use(cors({
-    origin: ['http://localhost:5500', 'http://127.0.0.1:5500', 'http://localhost:3000'],
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type'],
