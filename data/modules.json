@@ -4,8 +4,8 @@
     "name": "Module 342",
     "file": "/models/cabinet/342_DM54BC7D1D.glb",
     "category": "cabinet",
-    "scale": 0.01,
+    "scale": 0.005,
     "position": [0, 0.5, 0],
-    "rotation": [0, 0, 0]
+    "rotation": [1.5708, 0, 0]
   }
 ]
