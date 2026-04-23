@@ -15,7 +15,8 @@ const allowedOrigins = [
     'http://localhost:5500',
     'http://127.0.0.1:5500',
     'http://localhost:3000',
-    process.env.FRONTEND_URL,          // Vercel productie-URL (Railway env var)
+    'https://pillar-configurator.vercel.app',
+    process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 app.use(cors({
