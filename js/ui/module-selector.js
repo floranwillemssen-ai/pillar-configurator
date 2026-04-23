@@ -50,6 +50,7 @@ async function addModule() {
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
 
+        if (mod.defaultColor) applyColor(model, mod.defaultColor);
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
         fitCameraToModel(model);
@@ -81,6 +82,13 @@ function addToPlacedList(mod, index) {
         console.log(`✓ Module verwijderd: ${mod.name}`);
     });
     list.appendChild(li);
+}
+
+function applyColor(model, hex) {
+    const material = new THREE.MeshStandardMaterial({ color: hex });
+    model.traverse((child) => {
+        if (child.isMesh) child.material = material;
+    });
 }
 
 function fitCameraToModel(model) {
