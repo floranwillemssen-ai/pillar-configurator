@@ -23,8 +23,12 @@ console.log('CORS enabled');
 app.use(express.json());
 
 // --- Routes ---
-const quoteRoutes = require('./routes/quote.js');
+const quoteRoutes  = require('./routes/quote.js');
+const configRoutes = require('./routes/config.js');
+const adminRoutes  = require('./routes/admin.js');
 app.use('/api', quoteRoutes);
+app.use('/api/config', configRoutes);
+app.use('/api/admin', adminRoutes);
 
 // --- Health check ---
 app.get('/api/health', (req, res) => {

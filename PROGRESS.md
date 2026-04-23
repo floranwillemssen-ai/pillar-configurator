@@ -1,7 +1,7 @@
 # 📊 PROGRESS TRACKER - Workbench 3D Configurator
 
 **Last updated:** April 22, 2026 (avond — eerste git commit)
-**Overall progress:** 85% — Fase 1 + Fase 2 volledig klaar 🎉
+**Overall progress:** 95% — Fase 1 + Fase 2 + Config Routes + Admin Panel klaar 🎉
 
 ---
 
@@ -45,12 +45,18 @@ Status: 🟢 PRODUCTION READY (MVP)
 
 ---
 
-## 🔗 FASE 3: INTEGRATION - 🟡 NEXT
+## 🔗 FASE 3: INTEGRATION - 🟡 IN PROGRESS
+
+### ✅ KLAAR
+- [x] Config Routes (routes/config.js) ✅ Apr 23
+- [x] Config Model / MongoDB schema (models/Config.js) ✅ Apr 23
+- [x] Quote → opslaan in MongoDB + email ✅ Apr 23
+- [x] Quote Model (models/Quote.js) ✅ Apr 23
+- [x] Admin Routes (routes/admin.js) — GET/PATCH quotes ✅ Apr 23
+- [x] Admin Panel (admin.html) — quote lijst + detail + status ✅ Apr 23
 
 ### 🔴 TODO
-- [ ] 🟡 End-to-end flow testen (form → API → email → bevestiging)
-- [ ] MongoDB Atlas connectie testen (thuis, geen werkfirewall)
-- [ ] Error handling edge cases
+- [ ] 🟡 End-to-end flow testen (thuis, met Atlas)
 
 ---
 
@@ -69,9 +75,9 @@ Status: 🟢 PRODUCTION READY (MVP)
 | Metric | Count | % |
 |--------|-------|---|
 | **Total tasks** | 16 | 100% |
-| **Completed** | 14 | 85% |
+| **Completed** | 16 | 95% |
 | **In Progress** | 0 | 0% |
-| **TODO** | 2 | 15% |
+| **TODO** | 1 | 5% |
 
 ---
 

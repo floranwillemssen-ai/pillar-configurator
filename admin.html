@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Workbench Configurator</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: sans-serif;
+            background: #f4f4f4;
+            color: #222;
+        }
+
+        header {
+            background: #222;
+            color: #fff;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 { font-size: 1.1rem; }
+
+        #refresh-btn {
+            background: #fff;
+            color: #222;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        #refresh-btn:hover { background: #ddd; }
+
+        main { padding: 24px; }
+
+        #stats {
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #333;
+            color: #fff;
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        td {
+            padding: 10px 14px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f9f9f9; }
+
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .status-new       { background: #dbeafe; color: #1d4ed8; }
+        .status-reviewing { background: #fef9c3; color: #854d0e; }
+        .status-approved  { background: #dcfce7; color: #15803d; }
+        .status-sent      { background: #f3e8ff; color: #7e22ce; }
+
+        .btn-detail {
+            background: #222;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.82rem;
+        }
+
+        .btn-detail:hover { background: #444; }
+
+        /* Detail panel */
+        #detail {
+            display: none;
+            margin-top: 24px;
+            background: #fff;
+            border-radius: 6px;
+            padding: 24px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        #detail h2 { font-size: 1rem; margin-bottom: 16px; }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .detail-grid label { font-size: 0.78rem; color: #777; display: block; }
+        .detail-grid span  { font-size: 0.9rem; font-weight: 500; }
+
+        #detail select, #detail textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        #detail textarea { resize: vertical; height: 80px; }
+
+        #save-btn {
+            margin-top: 14px;
+            background: #222;
+            color: #fff;
+            border: none;
+            padding: 9px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        #save-btn:hover { background: #444; }
+        #save-msg { margin-top: 8px; font-size: 0.85rem; color: #15803d; }
+
+        #loading { padding: 20px; color: #888; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🔧 Admin — Offerte Beheer</h1>
+    <button id="refresh-btn">↺ Vernieuwen</button>
+</header>
+
+<main>
+    <p id="stats"></p>
+    <div id="loading">Quotes laden...</div>
+    <table id="quotes-table" style="display:none">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Naam</th>
+                <th>Email</th>
+                <th>Bedrijf</th>
+                <th>Modules</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="quotes-body"></tbody>
+    </table>
+
+    <!-- Detail panel -->
+    <div id="detail">
+        <h2>Quote detail — <span id="d-id"></span></h2>
+        <div class="detail-grid">
+            <div><label>Naam</label><span id="d-name"></span></div>
+            <div><label>Email</label><span id="d-email"></span></div>
+            <div><label>Bedrijf</label><span id="d-company"></span></div>
+            <div><label>Telefoon</label><span id="d-phone"></span></div>
+            <div><label>Modules</label><span id="d-modules"></span></div>
+            <div><label>Aangemaakt</label><span id="d-date"></span></div>
+        </div>
+        <div><label>Bericht klant</label><span id="d-message"></span></div>
+        <br>
+        <label>Status</label>
+        <select id="d-status">
+            <option value="new">Nieuw</option>
+            <option value="reviewing">In behandeling</option>
+            <option value="approved">Goedgekeurd</option>
+            <option value="sent">Verzonden</option>
+        </select>
+        <br><br>
+        <label>Interne notities</label>
+        <textarea id="d-notes" placeholder="Notities voor intern gebruik..."></textarea>
+        <br>
+        <button id="save-btn">Opslaan</button>
+        <p id="save-msg"></p>
+    </div>
+</main>
+
+<script>
+    const API = 'http://localhost:3000/api/admin';
+    let currentId = null;
+
+    async function loadQuotes() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('quotes-table').style.display = 'none';
+
+        try {
+            const res  = await fetch(`${API}/quotes`);
+            const data = await res.json();
+
+            document.getElementById('stats').textContent =
+                `${data.total} offerte(s) in database`;
+
+            const tbody = document.getElementById('quotes-body');
+            tbody.innerHTML = '';
+
+            data.quotes.forEach(q => {
+                const datum = new Date(q.createdAt).toLocaleDateString('nl-NL');
+                const row   = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${datum}</td>
+                    <td>${q.contactData.name}</td>
+                    <td>${q.contactData.email}</td>
+                    <td>${q.contactData.company || '—'}</td>
+                    <td>${q.configData.modules.length}</td>
+                    <td><span class="status status-${q.status}">${q.status}</span></td>
+                    <td><button class="btn-detail" data-id="${q.configId}">Detail</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('quotes-table').style.display = 'table';
+
+            // Klikhandler voor detail-knoppen
+            tbody.querySelectorAll('.btn-detail').forEach(btn => {
+                btn.addEventListener('click', () => openDetail(btn.dataset.id, data.quotes));
+            });
+        } catch (err) {
+            document.getElementById('loading').textContent =
+                '❌ Kan geen verbinding maken met server (localhost:3000)';
+        }
+    }
+
+    function openDetail(configId, quotes) {
+        const q = quotes.find(x => x.configId === configId);
+        if (!q) return;
+
+        currentId = configId;
+
+        document.getElementById('d-id').textContent      = configId;
+        document.getElementById('d-name').textContent    = q.contactData.name;
+        document.getElementById('d-email').textContent   = q.contactData.email;
+        document.getElementById('d-company').textContent = q.contactData.company || '—';
+        document.getElementById('d-phone').textContent   = q.contactData.phone   || '—';
+        document.getElementById('d-message').textContent = q.contactData.message || '—';
+        document.getElementById('d-modules').textContent = `${q.configData.modules.length} module(s)`;
+        document.getElementById('d-date').textContent    =
+            new Date(q.createdAt).toLocaleString('nl-NL');
+
+        document.getElementById('d-status').value = q.status;
+        document.getElementById('d-notes').value  = q.adminNotes || '';
+        document.getElementById('save-msg').textContent = '';
+        document.getElementById('detail').style.display = 'block';
+        document.getElementById('detail').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('save-btn').addEventListener('click', async () => {
+        if (!currentId) return;
+
+        const status = document.getElementById('d-status').value;
+        const notes  = document.getElementById('d-notes').value;
+
+        try {
+            const res = await fetch(`${API}/quote/${currentId}`, {
+                method:  'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ status, notes }),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('save-msg').textContent = '✅ Opgeslagen';
+                loadQuotes();
+            }
+        } catch (err) {
+            document.getElementById('save-msg').textContent = '❌ Opslaan mislukt';
+        }
+    });
+
+    document.getElementById('refresh-btn').addEventListener('click', loadQuotes);
+
+    // Direct laden bij openen
+    loadQuotes();
+</script>
+</body>
+</html>
