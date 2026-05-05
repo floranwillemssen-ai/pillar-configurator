@@ -44,11 +44,14 @@ async function addModule() {
         const s = mod.scale ?? 1;
         model.scale.set(s, s, s);
 
-        const [px, py, pz] = mod.position ?? [0, 0, 0];
-        model.position.set(px, py, pz);
-
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
+
+        // Centreer model op basis van bounding box, zet onderkant op Y=0
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.set(-center.x, -box.min.y, -center.z);
+        console.log(`Model bbox: ${JSON.stringify(box.getSize(new THREE.Vector3()).toArray().map(v => Math.round(v*100)/100))}`);
 
         const matBlack  = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
         const matSilver = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.7, roughness: 0.2 });
