@@ -53,20 +53,11 @@ async function addModule() {
         model.position.set(-center.x, -box.min.y, -center.z);
 
         const matBlack  = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
-        const matPlate  = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, metalness: 0.4, roughness: 0.6 });
         const matSilver = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.7, roughness: 0.2 });
         model.traverse(child => {
             if (!child.isMesh) return;
-            if (!child.name.startsWith('Logo')) { child.material = matBlack; return; }
-            // Platte meshes (achtergrondplaat) hebben klein Z-bereik, letters/icoon zijn verhoogd
-            const pos = child.geometry.attributes.position;
-            let minZ = Infinity, maxZ = -Infinity;
-            for (let i = 0; i < pos.count; i++) {
-                const z = pos.getZ(i);
-                if (z < minZ) minZ = z;
-                if (z > maxZ) maxZ = z;
-            }
-            child.material = (maxZ - minZ) < 1.0 ? matPlate : matSilver;
+            const isZilver = child.name.toLowerCase().includes('zilver') || child.name === 'Logo' || child.name.startsWith('Logo.');
+            child.material = isZilver ? matSilver : matBlack;
         });
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
