@@ -57,8 +57,8 @@ async function addModule() {
         const box = new THREE.Box3().setFromObject(model);
         const size = box.getSize(new THREE.Vector3());
         const center = box.getCenter(new THREE.Vector3());
-        console.log('BBox size:', size.x.toFixed(2), size.y.toFixed(2), size.z.toFixed(2));
-        console.log('BBox center:', center.x.toFixed(2), center.y.toFixed(2), center.z.toFixed(2));
+        console.log('BBox size:', size.x.toFixed(6), size.y.toFixed(6), size.z.toFixed(6));
+        console.log('BBox center:', center.x.toFixed(6), center.y.toFixed(6), center.z.toFixed(6));
         console.log('BBox isEmpty:', box.isEmpty());
         model.position.set(-center.x, -box.min.y, -center.z);
         console.log('Model position na center:', model.position.x.toFixed(2), model.position.y.toFixed(2), model.position.z.toFixed(2));
