@@ -50,11 +50,6 @@ async function addModule() {
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
 
-        console.log('=== DEBUG MESH NAMES ===');
-        model.traverse(child => {
-            if (child.isMesh) console.log('Mesh:', child.name);
-        });
-
         applyMaterials(model, mod.defaultColor ?? '#ffffff', mod.materialOverrides ?? []);
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
