@@ -52,25 +52,11 @@ async function addModule() {
         const center = box.getCenter(new THREE.Vector3());
         model.position.set(-center.x, -box.min.y, -center.z);
 
-        let pillarCount = 0;
-        model.traverse(child => {
-            if (child.isMesh && child.name.includes('PILLAR')) pillarCount++;
-        });
-        console.log('PILLAR meshes gevonden:', pillarCount);
-        // Log eerste 3 mesh namen exact
-        let logged = 0;
-        model.traverse(child => {
-            if (child.isMesh && logged < 3) {
-                console.log('Mesh naam raw:', JSON.stringify(child.name));
-                logged++;
-            }
-        });
-
         const matBlack  = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
-        const matYellow = new THREE.MeshStandardMaterial({ color: 0xffff00, emissive: 0x888800 });
+        const matSilver = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.7, roughness: 0.2 });
         model.traverse(child => {
             if (child.isMesh) {
-                child.material = child.name.includes('PILLAR') ? matYellow : matBlack;
+                child.material = child.name.startsWith('Logo') ? matSilver : matBlack;
             }
         });
         model.userData = { id: mod.id, name: mod.name };
