@@ -47,27 +47,16 @@ async function addModule() {
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
 
-        // Tel meshes
-        let meshCount = 0;
-        model.traverse(c => { if (c.isMesh) meshCount++; });
-        console.log('Meshes gevonden:', meshCount);
-        console.log('Model children:', model.children.length);
-
-        // Centreer model op basis van bounding box, zet onderkant op Y=0
+        // Centreer model op basis van bounding box
         const box = new THREE.Box3().setFromObject(model);
-        const size = box.getSize(new THREE.Vector3());
         const center = box.getCenter(new THREE.Vector3());
-        console.log('BBox size:', size.x.toFixed(6), size.y.toFixed(6), size.z.toFixed(6));
-        console.log('BBox center:', center.x.toFixed(6), center.y.toFixed(6), center.z.toFixed(6));
-        console.log('BBox isEmpty:', box.isEmpty());
         model.position.set(-center.x, -box.min.y, -center.z);
-        console.log('Model position na center:', model.position.x.toFixed(2), model.position.y.toFixed(2), model.position.z.toFixed(2));
 
         const matBlack  = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
-        const matSilver = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.7, roughness: 0.2 });
+        const matYellow = new THREE.MeshStandardMaterial({ color: 0xffff00, emissive: 0x888800 });
         model.traverse(child => {
             if (child.isMesh) {
-                child.material = child.name.includes('PILLAR') ? matSilver : matBlack;
+                child.material = child.name.includes('PILLAR') ? matYellow : matBlack;
             }
         });
         model.userData = { id: mod.id, name: mod.name };
