@@ -2,9 +2,9 @@
   {
     "id": "342_DM54BC7D1D",
     "name": "Module 342",
-    "file": "/models/cabinet/342_DM54BC7D1D.glb",
+    "file": "/models/cabinet/Test met logo.glb",
     "category": "cabinet",
-    "scale": 0.005,
+    "scale": 0.001,
     "position": [0, 0.5, 0],
     "rotation": [-1.5708, 0, 0],
     "defaultColor": "#1a1a1a",

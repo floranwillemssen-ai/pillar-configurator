@@ -50,9 +50,11 @@ async function addModule() {
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
 
+        const matBlack  = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
+        const matSilver = new THREE.MeshStandardMaterial({ color: 0xd0d0d0, metalness: 0.7, roughness: 0.2 });
         model.traverse(child => {
             if (child.isMesh) {
-                child.material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
+                child.material = child.name.includes('PILLAR') ? matSilver : matBlack;
             }
         });
         model.userData = { id: mod.id, name: mod.name };
