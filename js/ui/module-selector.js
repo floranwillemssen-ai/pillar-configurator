@@ -52,13 +52,10 @@ async function addModule() {
 
         model.traverse(child => {
             if (child.isMesh) {
-                console.log('Applying material to:', child.name);
                 if (child.name === 'Cube') {
-                    console.log('  → Setting ZILVER');
-                    child.material = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.8, roughness: 0.2 });
+                    child.material = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.9, roughness: 0.1 });
                 } else {
-                    console.log('  → Setting ZWART');
-                    child.material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.2, roughness: 0.8 });
+                    child.material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
                 }
             }
         });
