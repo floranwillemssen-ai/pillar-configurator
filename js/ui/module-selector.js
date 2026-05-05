@@ -53,7 +53,12 @@ async function addModule() {
         model.traverse(child => {
             if (child.isMesh) {
                 if (child.name.includes('Cube')) {
-                    child.material = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.8, roughness: 0.2 });
+                    child.material = new THREE.MeshStandardMaterial({
+                        color: 0xe8e8e8,
+                        metalness: 0.5,
+                        roughness: 0.15,
+                        emissive: 0x282828
+                    });
                 } else {
                     child.material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
                 }
