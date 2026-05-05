@@ -50,7 +50,7 @@ async function addModule() {
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
 
-        if (mod.defaultColor) applyColor(model, mod.defaultColor);
+        applyMaterials(model, mod.defaultColor ?? '#ffffff', mod.materialOverrides ?? []);
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
         fitCameraToModel(model);
@@ -84,10 +84,20 @@ function addToPlacedList(mod, index) {
     list.appendChild(li);
 }
 
-function applyColor(model, hex) {
-    const material = new THREE.MeshStandardMaterial({ color: hex });
+function applyMaterials(model, defaultColor, materialOverrides) {
+    const defaultMat = new THREE.MeshStandardMaterial({ color: defaultColor, metalness: 0.1, roughness: 0.7 });
     model.traverse((child) => {
-        if (child.isMesh) child.material = material;
+        if (!child.isMesh) return;
+        const override = materialOverrides.find(o => child.name === o.meshName);
+        if (override) {
+            child.material = new THREE.MeshStandardMaterial({
+                color: override.color,
+                metalness: override.metalness ?? 0,
+                roughness: override.roughness ?? 0.5
+            });
+        } else {
+            child.material = defaultMat;
+        }
     });
 }
 
