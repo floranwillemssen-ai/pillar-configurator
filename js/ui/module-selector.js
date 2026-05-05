@@ -50,7 +50,14 @@ async function addModule() {
         const [rx, ry, rz] = mod.rotation ?? [0, 0, 0];
         model.rotation.set(rx, ry, rz);
 
-        applyMaterials(model, mod.defaultColor ?? '#ffffff', mod.materialOverrides ?? []);
+        model.traverse(child => {
+            if (!child.isMesh) return;
+            if (child.name === 'Cube') {
+                child.material = new THREE.MeshStandardMaterial({ color: 0xc0c0c0, metalness: 0.6, roughness: 0.4 });
+            } else if (child.name === 'Naamloos-342DM54BC7D1D-3D_X2_7b805316_X0_') {
+                child.material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.1, roughness: 0.8 });
+            }
+        });
         model.userData = { id: mod.id, name: mod.name };
         scene.add(model);
         fitCameraToModel(model);
