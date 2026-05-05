@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 // --- Scene ---
 const scene = new THREE.Scene();
@@ -14,6 +15,9 @@ camera.lookAt(0, 0, 0);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
 // Schaduwen inschakelen op de renderer
 renderer.shadowMap.enabled = true;
@@ -22,6 +26,11 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 // Canvas koppelen aan de container in de HTML
 const container = document.getElementById('canvas-container');
 container.appendChild(renderer.domElement);
+
+// Environment map voor correcte metallic/roughness weergave
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+pmremGenerator.dispose();
 
 // --- Resize handler ---
 // Past camera aspect-ratio en renderer afmetingen aan bij vensterwijziging
