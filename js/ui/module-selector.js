@@ -54,10 +54,11 @@ async function addModule() {
             if (child.isMesh) {
                 if (child.name.includes('Cube')) {
                     child.material = new THREE.MeshStandardMaterial({
-                        color: 0xe8e8e8,
-                        metalness: 0.5,
-                        roughness: 0.15,
-                        emissive: 0x282828
+                        color: 0xffffff,
+                        emissive: 0xffffff,
+                        emissiveIntensity: 1.0,
+                        metalness: 0,
+                        roughness: 1
                     });
                 } else {
                     child.material = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, metalness: 0.3, roughness: 0.7 });
